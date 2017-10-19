@@ -1,0 +1,199 @@
+<div fxFlex.gt-sm="100%" fxLayoutAlign="center center">
+    <md-card *ngIf="showMobileEditDetail[calculationID] && simulation.showResumMobile===false && !verifyShowEditDetailMobile()" fxFlex.gt-sm="100%" [class.calculationselected]="calculation.selected">
+        <form #ff="ngForm">
+            <div fxLayout="column" [ngStyle]="{'padding': '3%', 'height': '697px'}">
+
+                <div fxLayout="row" [ngStyle.gt-sm]="{'height': '6%'}" class="padding5">
+                    <div [ngStyle]="{'margin': '-6%', 'height': '0'}" class="texIcon linkicon" *ngIf="calculationID > 0" (click)="removeSimulation()">
+                        <i class="material-icons">delete_forever</i></div>
+                    <div fxLayout="row" fxLayoutAlign="center center" style="width: 80%; padding-left: 20%;">
+                        <h3 class="icon" style="margin:0px;">{{ (calculation.financialTable && calculation.financialTable.promotional 
+                                                                && calculationID == 0 ? 'lb-call-condition' : 'lb-simulation')
+                            | translate | uppercase}} {{calculation.financialTable && calculation.financialTable.promotional && calculationID == 0 ? '' : calculationID+1}}
+                        </h3>
+                    </div>
+                    <div class="text-comission">
+                        <i class="material-icons linkicon" style="font-size: smaller;" (click)="previuscondition()">keyboard_arrow_left</i>
+                        <span style="font-size: medium;" *ngIf="calculation.commission">
+                                                        {{calculation.commission.description}} </span>
+                        <i class="material-icons linkicon" style="font-size: smaller;" (click)="nextcondition()">keyboard_arrow_right</i></div>
+                </div>
+                <div fxLayout="row" class="space-component-top">
+                    <md-select [disabled]="disableFieldsByStatusDossier()" placeholder="{{'lb-financial-type' | translate}}" style="width:100%" ngControl [required]="required" [(ngModel)]="calculation.financialType"
+                        (change)="changeFinancialType()" #name="ngModel" name="financialType">
+                        <md-option *ngFor="let financialType of financialTypeList" [value]="financialType">
+                            {{ financialType.description }}
+                        </md-option>
+                    </md-select>
+                </div>
+                <div fxLayout="row" class="space-component-top">
+                    <md-select [disabled]="disableFieldsByStatusDossier()" placeholder="{{'lb-table' | translate}}" (change)="changeFinancialTable()" fxFlex="80%" ngControl [required]="required"
+                        [(ngModel)]="calculation.financialTable" #name="ngModel" name="financialTable">
+                        <md-option *ngFor="let financialTable of financialTableList" [value]="financialTable">
+                            {{ financialTable.description }}
+                        </md-option>
+                    </md-select>
+                    <md-icon [ngStyle]="{'margin-top': '4%'}">info</md-icon>
+                </div>
+                <div fxLayout="row" class="space-component-top">
+                    <md-select [disabled]="disableFieldsByStatusDossier()" placeholder="{{'lb-lack' | translate}}" style="width:100%" ngControl required [(ngModel)]="calculation.delay"
+                        #name="ngModel" name="carencia" (change)="calculate()">
+                        <md-option *ngFor="let delay of delayList" [value]="delay">
+                            {{ delay }}
+                        </md-option>
+                    </md-select>
+                </div>
+
+                <div fxLayout="row" fxLayout="center center" class="space-component-top">
+                    <div fxFlex="70%">
+                        <md-input-container fxFlex="80%">
+                            <input [disabled]="disableFieldsByStatusDossier()" currencyMask  maxlength="17" mdInput type="text" class="entraceValue" (blur)="calculate()" (keyup)="setEntrancePerc()" placeholder="{{'lb-entrance-value' | translate}}"
+                                ngControl required [(ngModel)]="calculation.entranceValue" #name="ngModel" name="entraceValue"
+                                id="entranceValue">
+                        </md-input-container>
+                    </div>
+                    <div fxFlex="30%">
+                        <md-input-container fxFlex="100%">
+                            <input [disabled]="disableFieldsByStatusDossier()" mdInput type="text" currencyMask [options]="{ prefix: ''}" (blur)="calculate()" (keyup)="setEntranceValue()" placeholder="{{'lb-entrance-percent' | translate}}"
+                                ngControl required [(ngModel)]="entrancePerc" #name="ngModel" name="coeficiente" id="entrancePerc">
+                        </md-input-container>
+                    </div>
+                </div>
+
+                <div fxLayout="row" fxLayout="center center" class="space-component-top">
+                    <div fxFlex="70%">
+                        <md-select [disabled]="disableFieldsByStatusDossier()" placeholder="{{'lb-financial-during' | translate}}" style="width:80%" ngControl required [(ngModel)]="calculation.term"
+                            (change)="changeTerm()" #name="ngModel" name="term">
+                            <md-option *ngFor="let term of termList" [value]="term">
+                                {{ term }}
+                            </md-option>
+                        </md-select>
+                    </div>
+                    <div fxFlex="30%" *ngIf="isCDCFlex">
+                        <md-select [disabled]="disableFieldsByStatusDossier()" placeholder="{{'lb-repackage' | translate}}" style="width:100%" ngControl required [(ngModel)]="calculation.repackage"
+                            #name="ngModel" name="repackage" (change)="calculate()">
+                            <md-option *ngFor="let repackage of repackageList" [value]="repackage">
+                                {{ repackage.importCode }}
+                            </md-option>
+                        </md-select>
+                    </div>
+                </div>
+
+                <div fxLayout="row">
+                    <div fxFlex="30%">
+                        <span>{{'lb-services' | translate}}<br>{{'lb-and' | translate}} {{'lb-insurance' | translate}}</span>
+                    </div>
+                    <div fxFlex="70%" fxLayoutAlign="end none">
+                        <button md-raised-button color="primary" (click)="servicesAndInsurance()">{{'btn-see-services-and-insurance' | translate }}</button>
+                    </div>
+                </div>
+                <!--<div fxLayout="row" class="space-component-top">
+                <div fxFlex="30%">
+                    <span [ngStyle.gt-sm]="{'font-size':'11px'}">Seguro auto</span>
+                </div>
+                <div fxFlex="70%" fxLayoutAlign="end none">
+                    <button md-raised-button color="primary">Cotar seguro auto</button>
+                </div>
+            </div> -->
+
+                <div fxLayout="row" class="space-component-top">
+                    <div fxFlex="50%">
+                        <span>{{'lb-total-funded' | translate}}</span>
+                    </div>
+                    <div fxFlex="50%" fxLayoutAlign="end none">
+                        <span class="black-color font-bold">{{ this.calculation.financedAmount | money }}</span>
+                    </div>
+                </div>
+                <div fxLayout="row" [ngStyle]="{'height': '45px'}" class="space-component-top">
+                    <div fxFlex="50%">
+                        <span>{{'lb-monthly' | translate}}</span>
+                    </div>
+                    <div fxFlex="50%">
+                        <div fxLayoutAlign="center end" fxLayout="column" *ngFor="let installmentGroup of this.installmentsGroup">
+                            <div fxLayout="row">
+                                <span class="black-color font-bold">{{ installmentGroup.quantity }} X {{ installmentGroup.instalmentAmount | money }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div fxLayout="row">
+                    <div fxFlex="50%">
+                        <span>{{'lb-custumer-rate' | translate}}: </span>
+                    </div>
+                    <div fxFlex="50%" fxLayoutAlign="end none">
+                        <span>{{ calculation.coeficiente.taxCoefficient }}%</span>
+                    </div>
+                </div>
+                <div fxLayout="row" class="space-component-top">
+                    <div fxFlex="50%">
+                        <button md-raised-button color="primary" (click)="installmentsDialog()">{{'lb-payment-plan' | translate }}</button>
+                    </div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="center center" class="space-component-top">
+                    <div fxLayoutAlign="center" [ngStyle.gt-sm]="{'padding-bottom':'10px'}" *ngIf="media.isActive('xs') === false">
+                        <button md-raised-button [ngClass]="[!ff.form.valid || !calculation.financialTable || this.settingEntrace ? 'background-black-disabled' : 'background-black']"
+                            [disabled]="!ff.form.valid || !calculation.financialTable || this.settingEntrace || disableFieldsByStatusDossier()" (click)="contract()" md-dialog-close color="primary" *ngIf="!calculation.selected">
+                            {{'lb-contract' | translate | uppercase}}
+                        </button>
+                        <button md-raised-button [ngClass]="[!ff.form.valid || !calculation.financialTable || this.settingEntrace ? 'background-black-disabled' : 'background-black']"
+                            [disabled]="!ff.form.valid || !calculation.financialTable || this.settingEntrace && !disableFieldsByStatusDossier()" (click)="contract()" md-dialog-close color="primary" *ngIf="calculation.selected">
+                            <div fxLayout="column" fxLayoutAlign="center center">
+                                <div  fxLayout="row" fxFlex.gt-sm="15px">
+                                        <span>{{'lb-contracted' | translate | uppercase}}</span>
+                                </div>
+                                <div fxLayout="row" fxFlex.gt-sm="35px">
+                                        <span [ngStyle]="{'font-size':'10px'}">{{'lb-contracted-sub' | translate | uppercase}}</span>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+                <md-toolbar *ngIf="media.isActive('xs')" (click)="compare()" class="mobileButtonCalc">
+                    {{'lb-compare' | translate | uppercase}}
+                </md-toolbar>
+
+            </div>
+        </form>
+    </md-card>
+    <!-- MOSTRA CALCULATION HABILITADO MOBILE -->
+    <div fxFlex.xs="100%" *ngIf="verifyShowEditDetailMobile() && simulation.showResumMobile===false" fxHide.gt-sm="true" fxHide.sm="true"
+        [ngStyle]="{'border': '1px solid #fff', 'margin-top': '2%', 'margin-bottom': '18%'}">
+        <md-card fxFlex.xs="100%" [class.calculationselected]="calculation.selected">
+            <div fxLayout="column" [ngStyle.xs]="{'padding': '4%'}">
+                <div fxLayoutAlign="start none" fxLayout="row">
+                    <h4 (click)="editCalculation('editOnly')" class="icon">{{'lb-call-condition' | translate | uppercase}}</h4>
+                </div>
+                <div fxLayout="row">
+                    <div fxLayoutAlign="start none" fxFlex.xs="80%">
+                        <label>{{'lb-total-funded' | translate}}</label>
+                    </div>
+                    <div fxLayoutAlign="end none" fxFlex.xs="20%">
+                        <span class="black-color font-bold">{{ this.calculation.financedAmount | money }}</span>
+                    </div>
+                </div>
+                <hr [ngStyle]="{'border': '1px solid #f1f1f1', 'width': '100%'}">
+                <div fxLayout="row">
+                    <div fxLayoutAlign="start none" fxFlex.xs="80%">
+                        <label>{{'lb-monthly' | translate}}</label>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="end none" *ngFor="let installmentGroup of this.installmentsGroup">
+                        <span class="black-color font-bold">{{ installmentGroup.quantity }} X {{ installmentGroup.instalmentAmount | money }}</span>
+                    </div>
+                </div>
+                <div fxLayout="row">
+                    <md-toolbar *ngIf="!this.simulation.calculationSelected.selected" (click)="contract()" class="mobileButtonCalc">
+                        {{'lb-contract' | translate | uppercase}}
+                    </md-toolbar>
+
+                    <md-toolbar *ngIf="this.simulation.calculationSelected.selected" (click)="contract()" class="mobileButtonCalc">
+                        {{'lb-contracted' | translate | uppercase}}
+                        <span style="font-size: 11px !important;"> {{'lb-contracted-sub' | translate | uppercase}}</span>
+                    </md-toolbar>
+                </div>
+            </div>
+        </md-card>
+    </div>
+
+
+</div>

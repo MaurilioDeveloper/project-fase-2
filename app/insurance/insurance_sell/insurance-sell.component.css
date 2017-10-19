@@ -1,0 +1,90 @@
+*, *::before, *::after {
+	box-sizing: border-box;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+}
+insurance-sell {
+	width: 100%;
+	height: 100%;
+}
+
+body {
+	background-color: #f2f2f2;
+	display: flex;
+	flex-direction: column;
+}
+
+.nav {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	padding: 1em;
+	flex: 1 0 auto;
+}
+
+.nav--rci {
+	background-color: #F7B100;
+}
+
+.nav--rci-nissan {
+	background-color: #C2072D;
+}
+
+.nav__button {
+	margin: 0.5em;
+	padding: 1em;
+	border: 2px solid #fff;
+	background-color: black;
+	font-weight: bold;
+	color: #fff;
+	border-radius: 10px;
+	font-size: 0.8em;
+	cursor: pointer;
+	text-transform: uppercase;
+	box-shadow: 0 2px 3px 0 rgba(0,0,0,0.35);
+	min-width: 160px;
+}
+
+.nav button:last-child {
+	margin-right: 0;
+}
+
+.nav button:hover {
+	background-color: #fff;
+	color: black;
+}
+
+.nav button:active,
+.nav button:focus {
+	outline: none;
+}
+#nimbleAppPlace {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: block;
+  flex: 1 1 100%;
+}
+
+#nimbleAppPlace  > #nimbleAppIframe {
+  width: 100% !important;
+  min-height: 100% !important;
+  display: block !important;
+  margin: 0 auto !important;
+  background: transparent !important;
+}
+
+
+iframe{
+    width: 100% !important;
+    min-height: 100% !important;
+    display: block !important;
+    margin: 0 auto !important;
+    background: transparent !important;
+
+}

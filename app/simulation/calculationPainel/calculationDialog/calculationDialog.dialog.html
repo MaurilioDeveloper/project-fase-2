@@ -1,0 +1,38 @@
+<div fxLayout.gt-sm="row" fxLayout.xs="column" fxLayout.sm="column">
+  <div fxLayout.gt-sm="column" [ngStyle.gt-sm]="{'width': '33%'}">
+    <calculation  fxFlex.gt-sm="100%" [calculationID]="0"
+                  (removeCalculation)="removeCalculation($event)"></calculation>
+  
+  </div>
+  <div fxLayout.gt-sm="column" [ngStyle.gt-sm]="{'width': '33%'}">
+    <calculation *ngIf="this.showCalculations[1]" fxFlex.gt-sm="100%"  [calculationID]="1" 
+                          (removeCalculation)="removeCalculation($event)"></calculation>
+    
+    <div fxFlex.gt-sm="100%" fxFlex.sm="100%" *ngIf="!this.showCalculations[1]" class="back-grey center-center">
+      <div class="center-div">
+          <a (click)="addCalculation(1)" class="linkicon">
+              <p [ngStyle]="{'margin-top': '100%'}"><i class="material-icons">add_circle_outline</i><br> {{'lb-add-new' | translate}}<br> {{'lb-simulation' | translate}}
+              </p>
+          </a>
+      </div>
+    </div>
+  </div>
+  <div   fxLayout.gt-sm="column" [ngStyle.gt-sm]="{'width': '34%'}">
+    <calculation *ngIf="this.showCalculations[2]" fxFlex.gt-sm="100%"  [calculationID]="2" 
+             (removeCalculation)="removeCalculation($event)"></calculation>
+ 
+    <div fxFlex.gt-sm="100%" fxFlex.sm="100%" *ngIf="!this.showCalculations[2]" class="back-grey center-center">
+        <div class="center-div">
+            <a (click)="addCalculation(2)" class="linkicon">
+                <p [ngStyle]="{'margin-top': '100%'}"><i class="material-icons">add_circle_outline</i><br> {{'lb-add-new' | translate}}<br> {{'lb-simulation' | translate}}
+                </p>
+            </a>
+        </div>
+    </div>
+  </div>
+</div>
+<div style="position: fixed;top: -2%;right:2%; z-index: 99;">
+  <h2 [ngStyle]="{'cursor': 'pointer'}"><i class="material-icons" [ngStyle]="{'font-size': '40px'}" (click)="this.dialogRef.close()">close</i></h2>
+</div>
+
+

@@ -1,0 +1,7 @@
+<div>
+    <label>{{ 'msg-quotation-confirm' | translate }}</label>
+    <div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="3%" style="padding-top: 20px;">
+        <button type="button" md-raised-button color="primary" (click)="confirm(true)">{{ 'lb-yes' | translate | uppercase }}</button>
+        <button type="button" md-raised-button color="primary" (click)="confirm(false)">{{ 'lb-no' | translate | uppercase }}</button>
+    </div>
+</div>

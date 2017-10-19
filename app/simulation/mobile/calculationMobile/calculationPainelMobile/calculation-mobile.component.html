@@ -1,0 +1,14 @@
+<!-- EDITAR DADOS DE UM CALCULATION ESPECIFICO -->
+<calculation (compare)="compare(calculationID)" (removeCalculation)="removeCalculation(calculationID)"  *ngIf="this.showCalculations[calculationID]" fxFlex.gt-sm="100%"  [calculationID]="calculationID"></calculation> 
+
+
+<!-- CALCULATION QUE NÃO FOI ADICIONADA AINDA -->
+<div fxFlex.xs="100%" *ngIf="simulation.showResumMobile===false && !this.showCalculations[calculationID] && !this.simulation.detailSimulation"
+    [ngStyle]="{'border': '1px solid #fff', 'margin-top': '6%', 'background-color': '#f1f1f1'}">
+    <div [ngStyle]="{'text-align': 'center'}">
+        <a (click)="addCalculation(calculationID)" class="linkicon">
+            <p><i class="material-icons">add_circle_outline</i><br> {{'lb-add-new' | translate}}<br> {{'lb-simulation' | translate}}
+            </p>
+        </a>
+    </div>
+</div>

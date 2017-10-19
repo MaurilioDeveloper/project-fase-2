@@ -1,0 +1,237 @@
+<div class="" fxFlex="100">
+	<div fxLayoutAlign="center center" class="spaceCard">
+		<md-card fxFlex.gt-sm="80%" fxFlex.xs="100%">
+			<md-card-header id="card-menu-proposta">
+				<span class="mozilaMargin" [ngStyle]="{'padding-top':'2%'}">{{ 'lb-insurance-sold' | translate }}</span>
+			</md-card-header>
+
+			<md-card-content class="layouts">
+				<form>
+					<div fxLayout="row" fxLayoutWrap fxLayoutAlign="space-around stretch">
+						
+						<md-input-container fxFlex.xs="100%" fxFlex.gt-sm="45%">
+							<input mdInput placeholder="{{'insurance-quote-number' | translate }}" [(ngModel)]="filter.numberProposal" name="numberProposal">
+						</md-input-container>
+
+						<md-input-container fxFlex.xs="100%" fxFlex.gt-sm="45%">
+							<input mdInput placeholder="{{'lb-proposal' | translate}}" [(ngModel)]="filter.proposal" name="proposal">
+						</md-input-container>
+
+                        <md-input-container fxFlex.xs="100%" fxFlex.gt-sm="45%">
+							<input mdInput placeholder="{{ 'lb-proposal-adp-number' | translate }}" [(ngModel)]="filter.adp" name="adp">
+						</md-input-container>
+
+                        <md-select placeholder="{{ 'lb-customer-type' | translate }}" fxFlex.xs="100%" fxFlex.gt-sm="45%" name="clientType" [(ngModel)]="filter.clientType">
+							<md-option *ngFor="let personType of listPersonType" [value]="personType.name">
+									{{ personType.description }}
+							</md-option>
+						</md-select>
+
+                        <md-input-container fxFlex.xs="100%" fxFlex.gt-sm="45%">
+							<input mdInput placeholder="{{ 'lb-name' | translate }}" name="name" [(ngModel)]="filter.name">
+						</md-input-container>
+
+						<!--Status do Seguro-->
+						<md-select placeholder="{{ 'lb-insurance-status' | translate }}" fxFlex.xs="100%" fxFlex.gt-sm="45%" name="statusSeguro" [(ngModel)]="filter.statusSeguro">
+							<md-option *ngFor="let status of listInsuranceStatus" [value]="status.car_insurance_status_id">
+								{{ status.description }}
+							</md-option>
+						</md-select>
+
+                        <md-select placeholder="{{'lb-sale-type' | translate}}" fxFlex.xs="100%" fxFlex.gt-sm="45%" name="saleTypeId" [(ngModel)]="filter.saleTypeId">
+							<md-option *ngFor="let salesType of listSaleType" [value]="salesType.name">
+								{{ salesType.description}}
+							</md-option>
+						</md-select>
+								
+						<!--CALENDARIOS-->
+						<div fxFlex.xs="100%" fxFlex.gt-sm="45%" fxLayoutWrap fxLayoutAlign="space-around stretch">
+							<md-input-container fxFlex.gt-sm="45%" fxFlex.xs="100%">
+								<input mdInput 
+									[mdDatepicker]="picker3" 
+									placeholder="{{ 'lb-initial-creation-date' | translate }}" 
+									name="dateCreationInit"
+									[(ngModel)]="filter.dateCreationInit">
+								<md-datepicker-toggle mdSuffix [for]="picker3"></md-datepicker-toggle>
+							</md-input-container>
+							<md-datepicker #picker3></md-datepicker>
+
+							<md-input-container fxFlex.gt-sm="45%" fxFlex.xs="100%">
+								<input mdInput 
+									[mdDatepicker]="picker4" 
+									placeholder="{{ 'lb-final-creation-date' | translate}}" 
+									name="dateCreationEnd"
+									[(ngModel)]="filter.dateCreationEnd">
+								<md-datepicker-toggle mdSuffix [for]="picker4"></md-datepicker-toggle>
+							</md-input-container>
+							<md-datepicker #picker4></md-datepicker>
+						</div>
+
+						<!--<md-select placeholder="{{'lb-dealership' | translate}}" 
+									fxFlex.xs="100%" 
+									fxFlex.gt-sm="45%"
+									name="dealership" [(ngModel)]="filter.dealership">
+							<md-option *ngFor="let structure of listStructure" [value]="structure.structureId">
+								{{ structure.description }}
+							</md-option>
+						</md-select>
+						
+						<md-select placeholder="{{ 'lb-salesman' | translate }}" 
+									fxFlex.xs="100%" 
+									fxFlex.gt-sm="45%">
+							<md-option *ngFor="let personType of listPersonType" >
+								{{ personType.description }}
+							</md-option>
+						</md-select>-->
+
+						<md-select placeholder="{{'lb-dealership' | translate}}" fxFlex.xs="100%" fxFlex.gt-sm="45%" name="dealership" [(ngModel)]="filter.dealership"
+						 (ngModelChange)="loadSalesman(filter.dealership)">
+							<md-option *ngFor="let structure of listStructure" [value]="structure.structureId">
+								{{ structure.description }}
+							</md-option>
+						</md-select>
+
+						<md-select placeholder="{{'lb-salesman' | translate}}" fxFlex.xs="100%" fxFlex.gt-sm="45%"
+						 name="salesman" [(ngModel)]="filter.salesMan">
+							<md-option *ngFor="let salesman of listSalesman" [value]="salesman.personId">
+								{{ salesman.name }}
+							</md-option>
+						</md-select>
+
+					</div>
+                
+                    <!--BOTÕES-->
+                    <div fxLayout="row"
+						 fxLayoutAlign="end none" 
+						 fxLayoutWrap 
+						 fxLayoutGap.gt-sm="3%">
+                        <div fxFlex.gt-sm="20%" fxFlex.xs="100%">
+                            <button fxFlex.xs="100%" 
+									[ngStyle.xs]="{'margin-top.px':20}" 
+									[ngStyle.gt-sm]="{'margin-top.px':20}"
+                            	 	md-raised-button
+									(click)="loadForm()" 
+									color="primary">{{ 'btn-reset' | translate }}
+							</button>
+                        </div>
+                        <div fxFlex.gt-sm="20%" fxFlex.xs="100%">
+                            <button fxFlex.xs="100%" 
+									[ngStyle.xs]="{'margin-top.px':5}" 
+									[ngStyle.gt-sm]="{'margin-top.px':20}"
+                            		md-raised-button
+									(click)="consult()"
+									color="primary">{{ 'btn-search' | translate }}
+							</button>
+                        </div>
+                    </div>
+				</form>
+			</md-card-content>
+
+			<md-card-content [ngStyle]="{'padding': '1%'}" *ngIf="showConsult">
+				<ngx-datatable #table 
+							   	class="material my-agreement" 
+							   	[rows]="listDossiers" 
+							   	[columnMode]="'force'"
+								[headerHeight]="50"
+								[footerHeight]="50"
+								[rowHeight]="'50'"
+							   	[limit]="20" 
+							   	[messages]="{emptyMessage: 'Nenhum resultado para esses critérios.'}">
+                    <!--*ngIf="!media.isActive('xs')"-->
+					<ngx-datatable-column name="{{ 'lb-quotation' | translate }}">
+						<ng-template let-column="column" ngx-datatable-header-template>
+							{{ 'lb-quotation' | translate | uppercase }}
+						</ng-template>
+						<ng-template let-row="row" ngx-datatable-cell-template>
+							{{ row.numberProposal }}
+						</ng-template>
+					</ngx-datatable-column>
+                    <!--*ngIf="!media.isActive('xs')"-->
+					<ngx-datatable-column name="{{'lb-sale-type'  | translate}}">
+						<ng-template let-column="column" ngx-datatable-header-template>
+							{{'lb-sale-type' | translate | uppercase}}
+						</ng-template>
+						<ng-template let-row="row" ngx-datatable-cell-template>
+							{{row.saleTypeId}}
+						</ng-template>
+					</ngx-datatable-column>
+					<ngx-datatable-column name="{{'lb-proposal' | translate}}">
+						<ng-template let-column="column" ngx-datatable-header-template>
+							{{'lb-proposal' | translate | uppercase}}
+						</ng-template>
+						<ng-template let-row="row" ngx-datatable-cell-template>
+							{{row.proposal}}
+						</ng-template>
+					</ngx-datatable-column>
+					
+					<ngx-datatable-column name="ADP Nº">
+						<ng-template let-row="row" ngx-datatable-cell-template>
+							{{row.adp}}
+						</ng-template>
+					</ngx-datatable-column>
+
+					<ngx-datatable-column name="CPF/CNPJ">
+						<ng-template let-row="row" ngx-datatable-cell-template>
+							<label *ngIf="row.cpf_cnpj.length === 11">{{row.cpf_cnpj | cpfMask}}</label>
+							<label *ngIf="row.cpf_cnpj.length > 11">{{row.cpf_cnpj | cnpjMask}}</label>	
+						</ng-template>
+					</ngx-datatable-column>
+                    <!--*ngIf="!media.isActive('xs')"-->
+					<ngx-datatable-column name="{{'lb-client' | translate}}">
+						<ng-template let-column="column" ngx-datatable-header-template>
+							{{'lb-client' | translate | uppercase}}
+						</ng-template>
+						<ng-template let-row="row" ngx-datatable-cell-template>
+							{{row.client}}
+						</ng-template>
+					</ngx-datatable-column>
+
+                    <ngx-datatable-column name="{{ 'lb-date' | translate }}">
+						<ng-template let-column="column" ngx-datatable-header-template>
+							{{'lb-date' | translate | uppercase}}
+						</ng-template>
+						<ng-template let-row="row" ngx-datatable-cell-template>
+							{{row.date | date : 'dd/MM/yyyy'}}
+						</ng-template>
+					</ngx-datatable-column>
+
+                    <ngx-datatable-column name="{{'lb-sales-manager' | translate}}">
+						<ng-template let-column="column" ngx-datatable-header-template>
+							{{ 'lb-sales-manager' | translate | uppercase }}
+						</ng-template>
+						<ng-template let-row="row" ngx-datatable-cell-template>
+							{{row.salesMan}}
+						</ng-template>
+					</ngx-datatable-column>
+
+                    <ngx-datatable-column name="{{ 'lb-insurance-price' | translate }}">
+						<ng-template let-column="column" ngx-datatable-header-template>
+							{{ 'lb-insurance-price' | translate | uppercase }}
+						</ng-template>
+						<ng-template let-row="row" ngx-datatable-cell-template>
+							{{row.premium}}
+						</ng-template>
+					</ngx-datatable-column>
+
+					<ngx-datatable-column name="{{ 'lb-secure-status' | translate}}">
+						<ng-template let-column="column" ngx-datatable-header-template>
+							{{ 'lb-secure-status' | translate | uppercase}}
+						</ng-template>
+						<ng-template let-row="row" ngx-datatable-cell-template>
+							{{row.statusSeguro}}
+						</ng-template>
+					</ngx-datatable-column>
+         
+					<ngx-datatable-column name=" ">
+						<ng-template let-row="row" ngx-datatable-cell-template>
+							<a [routerLink]="['/simulation', row.dossierId]">
+								<md-icon>play_circle_outline</md-icon>
+							</a>
+						</ng-template>
+					</ngx-datatable-column>
+				</ngx-datatable>
+			</md-card-content>
+
+		</md-card>
+	</div>
+</div>
